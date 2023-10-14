@@ -1,16 +1,14 @@
 using System;
 using System.Collections;
 using UnityEngine;
-public class EnemyBehaviour : MonoBehaviour
+public class WolfBehaviour : MonoBehaviour
 {
     [SerializeField, Range(0f, 10f)] private float velocity;
     [SerializeField] private float distanceThreshold;
-    [SerializeField] private AudioClip[] enemySounds;
 
     private Rigidbody2D rigidbody;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
-    private AudioSource audioSource;
 
     private Vector2 playerPosition;
 
@@ -19,7 +17,6 @@ public class EnemyBehaviour : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -42,11 +39,11 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void CheckEnemySprite()
     {
-        if (transform.position.x - playerPosition.x > 0)
+        if (transform.position.x - playerPosition.x < 0)
         {
             spriteRenderer.flipX = false;
         }
-        else if (transform.position.x - playerPosition.x < 0)
+        else if (transform.position.x - playerPosition.x > 0)
         {
             spriteRenderer.flipX = true;
         }
@@ -57,31 +54,10 @@ public class EnemyBehaviour : MonoBehaviour
         animator.SetBool("isMoving", isMoving);
     }
 
-    private void PlayWalkSound()
-    {
-        audioSource.Stop();
-        audioSource.clip = enemySounds[0];
-        audioSource.Play();
-    }
-
-    public void PlayDeathSound()
-    {
-        audioSource.Stop();
-        audioSource.clip = enemySounds[1];
-        audioSource.Play();
-        StartCoroutine(Die());
-        StartDeathAnim();
-    }
-
     private IEnumerator Die()
     {
         yield return new WaitForSeconds(0.35f);
         Destroy(this.gameObject);
         GameManager.instance.EnemyKills();
-    }
-
-    private void StartDeathAnim()
-    {
-        animator.SetTrigger("onDeath");
     }
 }

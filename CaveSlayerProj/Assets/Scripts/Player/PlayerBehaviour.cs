@@ -25,6 +25,7 @@ public class PlayerBehaviour : MonoBehaviour
     private float initialGravityScale;
     private bool isMoving;
     private bool isJumping;
+    private bool isHurt;
     #endregion
 
     #region Combat variables
@@ -36,6 +37,7 @@ public class PlayerBehaviour : MonoBehaviour
     private int isMovingAnimatorHash;
     private int isJumpingAnimatorHash;
     private int attackAnimatorHash;
+    private int hurtAnimatorHash;
     #endregion
     #endregion
 
@@ -149,6 +151,12 @@ public class PlayerBehaviour : MonoBehaviour
         {
             animator.SetBool(isJumpingAnimatorHash, false);
         }
+
+        if (isHurt)
+        {
+            animator.SetTrigger(hurtAnimatorHash);
+        }
+  
     }
 
     private void GetPlayerComponents()
@@ -174,6 +182,7 @@ public class PlayerBehaviour : MonoBehaviour
         isMovingAnimatorHash = Animator.StringToHash("isMoving");
         isJumpingAnimatorHash = Animator.StringToHash("isJumping");
         attackAnimatorHash = Animator.StringToHash("attack");
+        hurtAnimatorHash = Animator.StringToHash("hurt");
     }
 
     public Vector2 GetPlayerPosition()
@@ -191,7 +200,6 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else if (isJumping && rigidBody.velocity.y < 0f)
         {
-            print("increasing gravity velocity");
             isJumping = true;
             rigidBody.gravityScale = initialGravityScale * jumpFallGravityMultiplier;
         }
@@ -199,6 +207,20 @@ public class PlayerBehaviour : MonoBehaviour
         {
             isJumping = true;
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Enemy"))
+        {
+            GameManager.instance.PlayerLife();
+            isHurt = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        isHurt = false;
     }
 
     #region OnEnable/Disable Functions
