@@ -129,6 +129,11 @@ public class PlayerBehaviour : MonoBehaviour
             {
                 enemy.PlayDeathSound();
             }
+
+            if (hittedEnemie.TryGetComponent(out WolfBehaviour wolf))
+            {
+                wolf.Death();
+            }
         }
     }
 
@@ -243,7 +248,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool IsGrounded()
     {
-        bool isGrounded = Physics2D.OverlapBox(groundCheckPos.position, new Vector2(1, 0.2f), groundLayer);
+        bool isGrounded = Physics2D.OverlapBox(groundCheckPos.position, new Vector2(.5f, 0.1f), groundLayer);
         return isGrounded;
     }
 
@@ -253,6 +258,6 @@ public class PlayerBehaviour : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(hitPoint.position, attackRange);
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(groundCheckPos.position, new Vector3(1, 0.2f));
+        Gizmos.DrawWireCube(groundCheckPos.position, new Vector3(.5f, 0.1f));
     }
 }

@@ -29,7 +29,7 @@ public class WolfBehaviour : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, playerPosition, velocity * Time.deltaTime);
         }
 
-        if (rigidbody.velocity.magnitude == 0)
+        else if (rigidbody.velocity.magnitude == 0)
         {
             SetIsMovingAnimParameter(false);
         }
@@ -54,10 +54,10 @@ public class WolfBehaviour : MonoBehaviour
         animator.SetBool("isMoving", isMoving);
     }
 
-    private IEnumerator Die()
+    public void Death()
     {
-        yield return new WaitForSeconds(0.35f);
         Destroy(this.gameObject);
         GameManager.instance.EnemyKills();
     }
+
 }

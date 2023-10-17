@@ -32,7 +32,7 @@ public class EnemyBehaviour : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, playerPosition, velocity * Time.deltaTime);
         }
 
-        if (rigidbody.velocity.magnitude == 0)
+        else if (rigidbody.velocity.magnitude == 0)
         {
             SetIsMovingAnimParameter(false);
         }
@@ -75,7 +75,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     private IEnumerator Die()
     {
-        yield return new WaitForSeconds(0.35f);
+        yield return new WaitForSeconds(0f);
         Destroy(this.gameObject);
         GameManager.instance.EnemyKills();
     }

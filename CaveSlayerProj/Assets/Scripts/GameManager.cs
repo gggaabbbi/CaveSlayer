@@ -44,11 +44,6 @@ public class GameManager : MonoBehaviour
             lifesText.SetActive(false);
             lifesNumber.SetActive(false);
         }
-
-        if(kills == 10)
-        {
-            currentLife++;
-        }
     }
 
     public void PlayerLife()
